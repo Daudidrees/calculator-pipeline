@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    environment {
+        dockerImage = ''
+        registry = 'daudidrees/calcul'
+        registryCredential = 'dockerhub-id'
+        k8sCredential = 'kubeid'
+    }
+
+    stages {
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build registry
+                }
+            }
+        }
+
+        stage('Docker Push Image') {
+            steps {
+                script {
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    // Load Kubernetes manifests
+                   // def deploymentManifest = readFile 'deployment.yml'
+                    // def serviceManifest = readFile 'service.yml'
+
+                    // Deploy to Kubernetes
+                    withKubeConfig(credentialsId: k8sCredential, serverUrl: 'https://192.168.49.2:8443') {
+                       // sh "kubectl apply -f - <<< '$deploymentManifest'"
+                        // sh "kubectl apply -f - <<< '$serviceManifest'"
+                        echo 'its working'
+                        sh 'kubectl apply -f deployment.yml'
+                        sh 'kubectl apply -f service.yml'   
+                        
+                    }
+                }
+            }
+        }
+    }
+}
