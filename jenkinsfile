@@ -35,7 +35,7 @@ pipeline {
                     // def serviceManifest = readFile 'service.yml'
 
                     // Deploy to Kubernetes
-                    withKubeConfig(credentialsId: k8sCredentials) {
+                    withKubeConfig(credentialsId: k8sCredentials,serverUrl: '127.0.0.1:33447') {
                        // sh "kubectl apply -f - <<< '$deploymentManifest'"
                         // sh "kubectl apply -f - <<< '$serviceManifest'"
                         echo 'its working'
