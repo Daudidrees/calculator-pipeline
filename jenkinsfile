@@ -5,6 +5,8 @@ pipeline {
         dockerImage = ''
         registry = 'daudidrees/calcul'
         registryCredential = 'dockerhub-id'
+        k8sCredential = 'kubeid'
+
     }
 
     stages {
@@ -34,7 +36,7 @@ pipeline {
                     // def serviceManifest = readFile 'service.yml'
 
                     // Deploy to Kubernetes
-                    withKubeConfig(credentialsId: 'kubeid', serverUrl: 'https://127.0.0.1:44537') {
+                    withKubeConfig(credentialsId: k8sCredential, serverUrl: 'https://127.0.0.1:44537') {
                        // sh "kubectl apply -f - <<< '$deploymentManifest'"
                         // sh "kubectl apply -f - <<< '$serviceManifest'"
                         echo 'its working'
