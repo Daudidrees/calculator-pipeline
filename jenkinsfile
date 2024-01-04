@@ -5,7 +5,7 @@ pipeline {
         dockerImage = ''
         registry = 'daudidrees/calcul'
         registryCredential = 'dockerhub-id'
-        k8sCredentials ='kubectl'
+        k8sCredentials ='kubeid'
     }
 
     stages {
